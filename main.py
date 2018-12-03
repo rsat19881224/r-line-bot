@@ -73,50 +73,24 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
-
-    try:
-        replied = text_pattern_handler.handle(event)
-
-        if not replied:
+    if 'おはよう' in event.message.text:
+        content = 'おはようございます'
+    elif 'こんにちは' in event.message.text:
+        content = 'こんにちは'
+        if 'いい天気' event.message.text:
+            content = 'そうですね'
             line_bot_api.reply_message(
                 event.reply_token,
-                # テキストメッセ返信処理 #
-                TextSendMessage('ちょっと何言ってるかわからない')
+                    TextSendMessage(text=content)
             )
-
-    except Exception:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage('エラーです')
-        )
-        raise
-
-# auというキーワードが含まれたメッセージが来た場合の処理 #
-@text_pattern_handler.add(pattern=r'^au$')
-def reply_items(event: MessageEvent, match: Match):
-
+        else:
+            pass
+    else:
+        content = 'ごめんなさい、あまり喋れません'
     line_bot_api.reply_message(
         event.reply_token,
-        # テキストメッセ返信処理 #
-        TextSendMessage('au')
+            TextSendMessage(text=content)
     )
-
-    #items = msglst.get_items(10)
-
-    #template = template_env.get_template('items.json')
-    #data = template.render(dict(items=items))
-
-    #print(data)
-
-    #line_bot_api.reply_message(
-    #    event.reply_token,
-    #    FlexSendMessage(
-    #        alt_text="items",
-    #        contents=CarouselContainer.new_from_json_dict(json.loads(data))
-    #    )
-    #)
-
-
 
 if __name__ == "__main__":
 #    app.run()
