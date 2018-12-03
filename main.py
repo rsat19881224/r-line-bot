@@ -93,13 +93,12 @@ def handle_message(event):
         if re.search(event.message.text,"ＡＵ"):
 
             line_bot_api.reply_message(
-            	f = open("items.json", 'r'),
-            	json_data = json.load(f)
+            	f = open("items.json", 'r')
 
                 event.reply_token,
 		        FlexSendMessage(
 		            alt_text='au耳寄り情報',
-		            contents=json_data
+		            contents=f
 		        )
             )
         else:
