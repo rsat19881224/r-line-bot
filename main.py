@@ -15,9 +15,7 @@
 import json
 import os
 import sys
-import re
 from argparse import ArgumentParser
-from re import Match
 from flask import Flask, request, abort
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from linebot import (
