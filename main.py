@@ -90,21 +90,21 @@ def handle_message(event):
                     TextSendMessage(text="どういたしまして！気をつけて帰ってね" + chr(0x100033)),
                 ]
             )
-        if re.search(event.message.text,"ＡＵ"):
-
-        	template = template_env.get_template('items.json')
-    		data = template.render(dict(items=items))
-
-    		print(data)
-
-            line_bot_api.reply_message(
-
-                event.reply_token,
-		        FlexSendMessage(
-		            alt_text='au耳寄り情報',
-		            contents=CarouselContainer.new_from_json_dict(json.loads(data))
-		        )
-            )
+#        if re.search(event.message.text,"ＡＵ"):
+#
+#        	template = template_env.get_template('items.json')
+#    		data = template.render(dict(items=items))
+#
+#    		print(data)
+#
+#            line_bot_api.reply_message(
+#
+#                event.reply_token,
+#		        FlexSendMessage(
+#		            alt_text='au耳寄り情報',
+#		            contents=CarouselContainer.new_from_json_dict(json.loads(data))
+#		        )
+#            )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
