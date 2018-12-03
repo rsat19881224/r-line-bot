@@ -12,23 +12,27 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
+import json
 import os
 import sys
+import re
 from argparse import ArgumentParser
-
+from re import Match
 from flask import Flask, request, abort
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from linebot import (
     LineBotApi, WebhookHandler
 )
 from linebot.exceptions import (
-    InvalidSignatureError
+    InvalidSignatureError,LineBotApiError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage,FlexSendMessage, BubbleContainer, CarouselContainer
 )
 
 app = Flask(__name__)
 
+# LINE連携部分 #
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
@@ -38,14 +42,15 @@ if channel_secret is None:
 if channel_access_token is None:
     print('Specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
     sys.exit(1)
-
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
+# テスト用 #
 @app.route("/")
 def hello_world():
     return "hello world!"
 
+# LINE メッセージ受信時処理 #
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -60,16 +65,57 @@ def callback():
         handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
-
+    except LineBotApiError as e:
+        app.logger.exception(f'LineBotApiError: {e.status_code} {e.message}', e)
+        raise e
     return 'OK'
 
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
+
+    try:
+        replied = text_pattern_handler.handle(event)
+
+        if not replied:
+            line_bot_api.reply_message(
+                event.reply_token,
+                # テキストメッセ返信処理 #
+                TextSendMessage('ちょっと何言ってるかわからない')
+            )
+
+    except Exception:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage('エラーです')
+        )
+        raise
+
+# auというキーワードが含まれたメッセージが来た場合の処理 #
+@text_pattern_handler.add(pattern=r'^au$')
+def reply_items(event: MessageEvent, match: Match):
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
+        # テキストメッセ返信処理 #
+        TextSendMessage('au')
     )
+
+    #items = msglst.get_items(10)
+
+    #template = template_env.get_template('items.json')
+    #data = template.render(dict(items=items))
+
+    #print(data)
+
+    #line_bot_api.reply_message(
+    #    event.reply_token,
+    #    FlexSendMessage(
+    #        alt_text="items",
+    #        contents=CarouselContainer.new_from_json_dict(json.loads(data))
+    #    )
+    #)
+
 
 
 if __name__ == "__main__":
