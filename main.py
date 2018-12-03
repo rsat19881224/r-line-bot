@@ -93,7 +93,7 @@ def handle_message(event):
         if re.search(event.message.text,"ＡＵ"):
 
             line_bot_api.reply_message(
-            	f = open("items.json", 'r')
+            	f = open("items.json", 'r'),
             	json_data = json.load(f)
 
                 event.reply_token,
