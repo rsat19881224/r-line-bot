@@ -78,7 +78,7 @@ def handle_message(event):
     global near_station_geo_lon
 
     if event.type == "message":
-        if (event.message.text == "帰るよー！") or (event.message.text == "帰るよ！") or (event.message.text == "帰る！") or (event.message.text == "帰るよ"):
+        if re.search(event.message.text,"帰る"):
             line_bot_api.reply_message(
                 event.reply_token,
                 [
@@ -87,7 +87,7 @@ def handle_message(event):
                     TextSendMessage(text='line://nv/location'),
                 ]
             )
-        if (event.message.text == "ありがとう！") or (event.message.text == "ありがとう") or (event.message.text == "ありがと！") or (event.message.text == "ありがと"):
+        if re.search(event.message.text,"あり"):
             line_bot_api.reply_message(
                 event.reply_token,
                 [
@@ -112,7 +112,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 [
-                    TextSendMessage(text="まだその言葉は教えてもらってないんです"+ chr(0x100029) + chr(0x100098)),
+                    TextSendMessage(text="分かりませんのよん～"+ chr(0x100029) + chr(0x100098)),
                 ]
             )
 
