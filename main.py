@@ -92,13 +92,17 @@ def handle_message(event):
             )
         if re.search(event.message.text,"ＡＵ"):
 
+        	template = template_env.get_template('items.json')
+    		data = template.render(dict(items=items))
+
+    		print(data)
+
             line_bot_api.reply_message(
-            	f = open("items.json", 'r')
 
                 event.reply_token,
 		        FlexSendMessage(
 		            alt_text='au耳寄り情報',
-		            contents=f
+		            contents=CarouselContainer.new_from_json_dict(json.loads(data))
 		        )
             )
         else:
