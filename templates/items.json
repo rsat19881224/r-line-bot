@@ -1,93 +1,150 @@
 {
-    "type": "carousel",
+  "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": "https://au-hikarinet.com/img/top/mainv1-norikae-areanone-147500.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "cover",
+    "action": {
+      "type": "uri",
+      "uri": "http://linecorp.com/"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
     "contents": [
-        {% for item in items %}
-        {
-            "type": "bubble",
-            "header": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "flex": 0,
-                                "size": "xxs",
-                                "color": "#aaaaaa",
-                                "text": "{{ item.created_at}}に投稿"
-                            },
-                            {
-                                "type": "filler"
-                            },
-                            {
-                                "type": "text",
-                                "flex": 0,
-                                "size": "xxs",
-                                "color": "#aaaaaa",
-                                "text": "{{ item.likes_count }}いいね"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "text",
-                        "weight": "bold",
-                        "size": "lg",
-                        "color": "#aaaaaa",
-                        "text": "{{ item.user.id }}"
-                    }
-                ]
-            },
-            "hero": {
-                "type": "image",
-                "url": "{{ item.user.profile_image_url }}",
-                "action": {
-                    "type": "message",
-                    "text": "users/{{ item.user.id }}"
-                }
-            },
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "{{ item.title }}",
-                        "wrap": true,
-                        "weight": "bold",
-                        "color": "#444444",
-                        "size": "lg",
-                        "action": {
-                            "type": "uri",
-                            "uri": "{{ item.url }}"
-                        }
-                    },
-                    {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "spacing": "sm",
-                        "contents": [
-                            {% for tag in item.tags %}
-                            {
-                                "type": "text",
-                                "flex": 0,
-                                "size": "sm",
-                                "color": "#aaaaaa",
-                                "text": "{{ tag.name }}",
-                                "action": {
-                                    "type": "message",
-                                    "text": "tags/{{ tag.name }}"
-                                }
-                            }{{ "," if not loop.last }}
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            }
-        }{{ "," if not loop.last }}
-        {% endfor %}
+      {
+        "type": "text",
+        "text": "au光がオススメ！",
+        "weight": "bold",
+        "size": "xl"
+      },
+      {
+        "type": "box",
+        "layout": "baseline",
+        "margin": "md",
+        "contents": [
+          {
+            "type": "icon",
+            "size": "sm",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+          },
+          {
+            "type": "icon",
+            "size": "sm",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+          },
+          {
+            "type": "icon",
+            "size": "sm",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+          },
+          {
+            "type": "icon",
+            "size": "sm",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+          },
+          {
+            "type": "icon",
+            "size": "sm",
+            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+          },
+          {
+            "type": "text",
+            "text": "4.0",
+            "size": "sm",
+            "color": "#999999",
+            "margin": "md",
+            "flex": 0
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "lg",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "特典",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "今お申込みいただくと…",
+                "wrap": true,
+                "color": "#666666",
+                "size": "sm",
+                "flex": 5
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "特典",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "今お申込みいただくと…",
+                "wrap": true,
+                "color": "#666666",
+                "size": "sm",
+                "flex": 5
+              }
+            ]
+          }
+        ]
+      }
     ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "contents": [
+      {
+        "type": "button",
+        "style": "link",
+        "height": "sm",
+        "action": {
+          "type": "uri",
+          "label": "お申込みはこちら！",
+          "uri": "https://kyouiq.com/"
+        }
+      },
+      {
+        "type": "button",
+        "style": "link",
+        "height": "sm",
+        "action": {
+          "type": "uri",
+          "label": "お申込みはこちら！",
+          "uri": "https://kyouiq.com/"
+        }
+      },
+      {
+        "type": "spacer",
+        "size": "sm"
+      }
+    ],
+    "flex": 0
+  }
 }

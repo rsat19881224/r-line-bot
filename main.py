@@ -72,11 +72,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    global near_station_name
-    global near_station_address
-    global near_station_geo_lat
-    global near_station_geo_lon
-
+    
     if event.type == "message":
         if re.search(event.message.text,"帰る"):
             line_bot_api.reply_message(
@@ -94,19 +90,17 @@ def handle_message(event):
                     TextSendMessage(text="どういたしまして！気をつけて帰ってね" + chr(0x100033)),
                 ]
             )
-        if event.message.text == "位置情報教えて！":
+        if re.search(event.message.text,"ＡＵ"):
+
             line_bot_api.reply_message(
+            	f = open("items.json", 'r')
+            	json_data = json.load(f)
+
                 event.reply_token,
-                [
-                    LocationSendMessage(
-                        title=near_station_name,
-                        address=near_station_address,
-                        latitude=near_station_geo_lat,
-                        longitude=near_station_geo_lon
-                    ),
-                    TextSendMessage(text="タップした後右上のボタンからGoogleMapsなどで開けますよ"+ chr(0x100079)),
-                    TextSendMessage(text="もし場所が間違えてたらもう一度地図画像をタップしてみたり位置情報を送り直してみてください"),    
-                ]
+		        FlexSendMessage(
+		            alt_text='au耳寄り情報',
+		            contents=json_data
+		        )
             )
         else:
             line_bot_api.reply_message(
