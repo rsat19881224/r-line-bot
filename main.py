@@ -70,27 +70,54 @@ def callback():
         raise e
     return 'OK'
 
-
 @handler.add(MessageEvent, message=TextMessage)
-def message_text(event):
-    if 'おはよう' in event.message.text:
-        content = 'おはようございます'
-    elif 'こんにちは' in event.message.text:
-        content = 'こんにちは'
-        if 'いい天気' event.message.text:
-            content = 'そうですね'
+def handle_message(event):
+    global near_station_name
+    global near_station_address
+    global near_station_geo_lat
+    global near_station_geo_lon
+
+    if event.type == "message":
+        if (event.message.text == "帰るよー！") or (event.message.text == "帰るよ！") or (event.message.text == "帰る！") or (event.message.text == "帰るよ"):
             line_bot_api.reply_message(
                 event.reply_token,
-                    TextSendMessage(text=content)
+                [
+                    TextSendMessage(text='お疲れ様です'+ chr(0x10002D)),
+                    TextSendMessage(text='位置情報を送ってもらうと近くの駅を教えますよ'+ chr(0x10008D)),
+                    TextSendMessage(text='line://nv/location'),
+                ]
+            )
+        if (event.message.text == "ありがとう！") or (event.message.text == "ありがとう") or (event.message.text == "ありがと！") or (event.message.text == "ありがと"):
+            line_bot_api.reply_message(
+                event.reply_token,
+                [
+                    TextSendMessage(text="どういたしまして！気をつけて帰ってね" + chr(0x100033)),
+                ]
+            )
+        if event.message.text == "位置情報教えて！":
+            line_bot_api.reply_message(
+                event.reply_token,
+                [
+                    LocationSendMessage(
+                        title=near_station_name,
+                        address=near_station_address,
+                        latitude=near_station_geo_lat,
+                        longitude=near_station_geo_lon
+                    ),
+                    TextSendMessage(text="タップした後右上のボタンからGoogleMapsなどで開けますよ"+ chr(0x100079)),
+                    TextSendMessage(text="もし場所が間違えてたらもう一度地図画像をタップしてみたり位置情報を送り直してみてください"),    
+                ]
             )
         else:
-            pass
-    else:
-        content = 'ごめんなさい、あまり喋れません'
-    line_bot_api.reply_message(
-        event.reply_token,
-            TextSendMessage(text=content)
-    )
+            line_bot_api.reply_message(
+                event.reply_token,
+                [
+                    TextSendMessage(text="まだその言葉は教えてもらってないんです"+ chr(0x100029) + chr(0x100098)),
+                ]
+            )
+
+
+
 
 if __name__ == "__main__":
 #    app.run()
